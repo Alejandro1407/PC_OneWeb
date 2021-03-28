@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PcOne.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_cargo" Type="varchar" MaxLength="25" />
+          <Property Name="descripcion_cargo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_categoria" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="400" />
+          <Property Name="imagen_categoria" Type="image" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="150" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="contrasena" Type="varchar" MaxLength="50" />
+          <Property Name="telefono" Type="varchar" MaxLength="9" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DUI" Type="varchar" MaxLength="10" />
+          <Property Name="nombres" Type="varchar" MaxLength="150" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="telefono" Type="varchar" MaxLength="9" />
+          <Property Name="edad" Type="int" />
+          <Property Name="salario" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="fecha_nac" Type="date" />
+          <Property Name="id_cargo" Type="int" />
+          <Property Name="contrasena" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="cantidad" Type="int" />
+          <Property Name="modelo" Type="varchar" MaxLength="50" />
+          <Property Name="costo" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="descripcion" Type="varchar" MaxLength="400" />
+          <Property Name="precio_venta" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="fecha_ingreso" Type="datetime" />
+          <Property Name="imagen_producto" Type="image" />
+          <Property Name="id_categoria" Type="int" />
+        </EntityType>
+        <Association Name="FK_ProductoCategoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PcOneStoreContainer">
+          <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ProductoCategoria" Association="Self.FK_ProductoCategoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PcOne" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_categoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="imagen_categoria" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_ProductoCategoria" FromRole="Categoria" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="modelo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="costo" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="descripcion" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="precio_venta" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="fecha_ingreso" Type="DateTime" Precision="3" />
+          <Property Name="imagen_producto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="id_categoria" Type="Int32" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK_ProductoCategoria" FromRole="Producto" ToRole="Categoria" />
+        </EntityType>
+        <Association Name="FK_ProductoCategoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PcOneEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <AssociationSet Name="FK_ProductoCategoria" Association="Self.FK_ProductoCategoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <EntitySet Name="Cargo" EntityType="PcOne.Cargo" />
+          <EntitySet Name="Empleado" EntityType="PcOne.Empleado" />
+        </EntityContainer>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_cargo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion_cargo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DUI" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="edad" Type="Int32" />
+          <Property Name="salario" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="fecha_nac" Type="DateTime" Precision="0" />
+          <Property Name="id_cargo" Type="Int32" />
+          <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PcOneStoreContainer" CdmEntityContainer="PcOneEntities">
+          <EntitySetMapping Name="Categoria">
+            <EntityTypeMapping TypeName="PcOne.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre_categoria" ColumnName="nombre_categoria" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="imagen_categoria" ColumnName="imagen_categoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="PcOne.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="PcOne.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="precio_venta" ColumnName="precio_venta" />
+                <ScalarProperty Name="fecha_ingreso" ColumnName="fecha_ingreso" />
+                <ScalarProperty Name="imagen_producto" ColumnName="imagen_producto" />
+                <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cargo">
+            <EntityTypeMapping TypeName="PcOne.Cargo">
+              <MappingFragment StoreEntitySet="Cargo">
+                <ScalarProperty Name="descripcion_cargo" ColumnName="descripcion_cargo" />
+                <ScalarProperty Name="nombre_cargo" ColumnName="nombre_cargo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleado">
+            <EntityTypeMapping TypeName="PcOne.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="id_cargo" ColumnName="id_cargo" />
+                <ScalarProperty Name="fecha_nac" ColumnName="fecha_nac" />
+                <ScalarProperty Name="salario" ColumnName="salario" />
+                <ScalarProperty Name="edad" ColumnName="edad" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="DUI" ColumnName="DUI" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
